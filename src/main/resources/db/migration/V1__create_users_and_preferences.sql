@@ -1,0 +1,22 @@
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+CREATE TABLE users (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    firebase_uid VARCHAR(160) NOT NULL UNIQUE,
+    email VARCHAR(255) NOT NULL,
+    name VARCHAR(120) NOT NULL,
+    currency VARCHAR(3) NOT NULL DEFAULT 'BRL',
+    theme VARCHAR(20) NOT NULL DEFAULT 'SYSTEM',
+    face_id_enabled BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE user_preferences (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL UNIQUE REFERENCES users(id) ON DELETE CASCADE,
+    default_period VARCHAR(20) NOT NULL DEFAULT 'MONTHLY',
+    default_sort VARCHAR(30) NOT NULL DEFAULT 'NEWEST_FIRST',
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
