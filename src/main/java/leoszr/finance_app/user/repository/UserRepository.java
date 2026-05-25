@@ -7,4 +7,6 @@ import java.util.UUID;
 
 public interface UserRepository extends JpaRepository<User, UUID> {
 	Optional<User> findByExternalAuthId(String externalAuthId);
+	Optional<User> findByEmailIgnoreCase(String email);
+	boolean existsByEmailIgnoreCase(String email);
 }

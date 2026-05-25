@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.UUID;
+
 @Service
 public class UserBootstrapService {
 	private final UserRepository users;
@@ -20,7 +22,11 @@ public class UserBootstrapService {
 	public UserBootstrapService(UserRepository users, CategoryRepository categories) { this.users = users; this.categories = categories; }
 	@Transactional
 	public User getOrCreate(AuthToken token) {
-		return users.findByExternalAuthId(token.externalAuthId()).orElseGet(() -> create(token));
+		try {
+			return users.findById(UUID.fromString(token.externalAuthId())).orElseThrow();
+		} catch (IllegalArgumentException ex) {
+			return users.findByExternalAuthId(token.externalAuthId()).orElseGet(() -> create(token));
+		}
 	}
 	private User create(AuthToken token) {
 		User user = new User();

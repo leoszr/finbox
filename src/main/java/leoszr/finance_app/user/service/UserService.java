@@ -35,6 +35,6 @@ public class UserService {
 	private User find(UUID id) { return users.findById(id).orElseThrow(() -> new NotFoundException("Usuário não encontrado.")); }
 	private UserResponse toResponse(User u) {
 		UserPreferences p = u.getPreferences();
-		return new UserResponse(u.getId(), u.getFirebaseUid(), u.getEmail(), u.getName(), u.getCurrency(), u.getTheme(), u.isFaceIdEnabled(), new PreferencesResponse(p.getDefaultPeriod(), p.getDefaultSort()));
+		return new UserResponse(u.getId(), u.getFirebaseUid(), u.getEmail(), u.getName(), u.getCurrency(), u.getTheme(), u.isFaceIdEnabled(), u.getStatus(), u.getRole(), new PreferencesResponse(p.getDefaultPeriod(), p.getDefaultSort()));
 	}
 }

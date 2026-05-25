@@ -26,7 +26,7 @@ public class BearerAuthenticationFilter extends OncePerRequestFilter {
 			try {
 				AuthToken token = authTokenService.verify(header.substring(7));
 				User user = userBootstrapService.getOrCreate(token);
-				AuthenticatedUser principal = new AuthenticatedUser(user.getId(), user.getFirebaseUid(), user.getEmail(), user.getName());
+				AuthenticatedUser principal = new AuthenticatedUser(user.getId(), user.getFirebaseUid(), user.getEmail(), user.getName(), user.getRole());
 				SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities()));
 			} catch (UnauthorizedException ex) {
 				SecurityContextHolder.clearContext();
